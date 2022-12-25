@@ -4,7 +4,7 @@
 
  Author  : Kouji Nakashima / kuc-arc-f.com
 
- date    : 2022/12/25
+ date    : 2022/12/25 
 
  update  : 
  
@@ -44,6 +44,4 @@ yarn dev
 
 ***
 ### Blog:
-
-https://zenn.dev/knaka0209/books/96eca53ecdb2cd/viewer/ee18b8
 
