@@ -6,7 +6,7 @@
 
  date    : 2022/12/25 
 
- update  : 
+ update  :  2023/01/03
  
 ***
 ### Summary
@@ -25,6 +25,9 @@ https://github.com/kuc-arc-f/express_api_12chat
 sqlite_path : src/lib/LibConfig.ts
 ```
 SQLITE_FILE_PATH: "/app.sqlite",
+
+# API_URL
+API_URL: "http://localhost",
 ```
 
 * install

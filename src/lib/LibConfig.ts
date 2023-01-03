@@ -9,5 +9,6 @@ const LibConfig = {
   STORAGE_KEY_DB: 'sqlite_db_app3' ,
   //session_key
   SESSION_KEY_USER: "user",
+  SESSION_KEY_CHAT_POST: "chat_posts",
 }
 export default LibConfig;

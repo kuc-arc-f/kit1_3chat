@@ -5,7 +5,7 @@
 
 <script lang="ts">
 import LibConfig from '$lib/LibConfig';
-//import LibStorage from '$lib/LibStorage';
+import LibAuth from '$lib/LibAuth';
 
 /** @type {import('./$types').PageData} */
 export let data;

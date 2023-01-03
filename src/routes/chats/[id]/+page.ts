@@ -1,5 +1,7 @@
 import { error } from '@sveltejs/kit';
 import LibConfig from '$lib/LibConfig';
+import LibAuth from '$lib/LibAuth';
+import LibDbSession from '$lib/LibDbSession';
 //type
 type IPostItem = {
   id: number,
@@ -29,8 +31,8 @@ const getItem = async function(id: number) {
 		});
     const json = await res.json()  
     const chat_posts = json.data
+    await LibDbSession.set(LibConfig.SESSION_KEY_CHAT_POST, chat_posts);
 console.log(json)	
-
     return chat_posts;
   } catch (e) {
     console.error(e);
@@ -41,12 +43,14 @@ console.log(json)
 /** @type {import('./$types').PageLoad} */
 export async function load({ params }) {
 console.log("id=", params.id);
+  const validLogin: boolean = await LibAuth.validLogin();
   const items = await getItem(Number(params.id));
-  console.log(items);
-    return {
-        id: params.id,
-        chat_posts: items,
-    };  
+console.log(items);
+  return {
+      id: params.id,
+      chat_posts: items,
+      validLogin: validLogin,
+  };  
 //    throw error(404, 'Not found');
 }
 /*

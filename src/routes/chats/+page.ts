@@ -3,6 +3,7 @@ import { dev } from '$app/environment';
 import { error } from '@sveltejs/kit';
 import LibAuth from '$lib/LibAuth';
 import LibConfig from '$lib/LibConfig';
+import LibDbSession from '$lib/LibDbSession';
 console.log(LibConfig.API_URL);
 
 //type
@@ -22,6 +23,7 @@ const getList = async function (): Promise<any>
     const json = await response.json();
     postItem = json.data;
 //console.log(postItem);
+    await LibDbSession.set(LibConfig.SESSION_KEY_CHAT_POST, postItem);
     return postItem;
   } catch (e) {
     console.error(e);
@@ -31,9 +33,6 @@ const getList = async function (): Promise<any>
 /** @type {import('./$types').PageLoad} */
 export async function load({ params }) {
     const validLogin: boolean = await LibAuth.validLogin();
-    /*
-      
-    */
       let items = [];
     if(validLogin !== false) {
       items = await getList();
