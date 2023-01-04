@@ -80,11 +80,8 @@ const parentShow = function (id: number)
         setTimeout(() => {
             console.log("parentShow=", id);
             modal_display = true;
-            setTimeout(() => {
-                const btn = document.getElementById("open_post_show");
-                btn?.click();
-            }
-            , timer);
+            const btn = document.getElementById("open_post_show");
+            btn?.click();
         }
         , timer);
     } catch (e) {
@@ -92,6 +89,11 @@ const parentShow = function (id: number)
     }
 }
 </script>
+
+<!-- CSS -->
+<style>
+.chat_show_modal_wrap #open_post_show { display: none ;}
+</style>
 
 <!-- MarkUp -->
 <div class="container my-2">
@@ -121,14 +123,26 @@ const parentShow = function (id: number)
     </div>
     {/each}  
     <!-- Modal -->
-    {#if modal_display}
-    <div class="modal_display_wrap">
-        <p>pistId={post_id}</p>
-        <ModalPost post_id={post_id}  />	
+    <div class="chat_show_modal_wrap">
+        <button type="button" class="btn btn-primary" id="open_post_show"
+        data-bs-toggle="modal" data-bs-target="#exampleModal">
+         Launch demo modal
+       </button>
+        <div class="modal fade" id="exampleModal" tabindex="-1"
+          aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    {#if modal_display}
+                    <ModalPost post_id={post_id}  />
+                    {/if}
+                </div>
+            </div>
+        </div>    
     </div>
-    {/if}
 </div>
+
 <!--
 <p>{convertBodyText(item.body)}
 </p>
+
 --->

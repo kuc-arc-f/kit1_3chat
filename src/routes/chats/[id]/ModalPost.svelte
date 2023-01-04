@@ -38,35 +38,23 @@ loadProc();
 </script>
 <!-- CSS -->
 <style>
-.chat_show_modal_wrap #open_post_show { display: none ;}
 </style>
 
-<!-- MarkUp -->
-<div class="chat_show_modal_wrap">
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" id="open_post_show"
-     data-bs-toggle="modal" data-bs-target="#exampleModal">
-      Launch demo modal
-    </button>
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Title</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            post_id={post_id}
-            <p>{@html LibCommon.replaceBrString(post_body)}
-            </p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save</button>
-          </div>
-        </div>
-      </div>
+<!-- ModalPost -->
+<div class="chat_show_modal_body">
+    <!-- Modal_body -->
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
-    <!-- Modal_end -->
+    <div class="modal-body">
+        post_id={post_id}
+        <p>{@html LibCommon.replaceBrString(post_body)}
+        </p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save</button>
+    </div>
+    <!-- Modal_body_end -->
 </div>
