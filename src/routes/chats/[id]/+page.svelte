@@ -101,7 +101,6 @@ const parentShow = function (id: number)
     </a>		
     <h1>{data.id}</h1>
     ID: {data.id}
-    <hr />
     <hr class="my-1" />
     <div class="row">
         <div class="col-sm-9">
@@ -112,11 +111,12 @@ const parentShow = function (id: number)
             Post</button>
         </div>
     </div>
-    <hr />
+    <hr class="my-1" />
     {#each chat_posts as item}
     <div>
         <p>{@html LibCommon.replaceBrString(item.body)}</p>
-        <p>{item.createdAt}, ID: {item.id}</p>
+        <p>{LibCommon.converDateString(item.createdAt)}, ID: {item.id}
+        </p>
         <button on:click={parentShow(item.id)}
         class="btn btn-sm btn-outline-primary">Show</button>
         <hr />
@@ -143,6 +143,6 @@ const parentShow = function (id: number)
 
 <!--
 <p>{convertBodyText(item.body)}
+<p>{item.createdAt}, ID: {item.id}</p>
 </p>
-
 --->

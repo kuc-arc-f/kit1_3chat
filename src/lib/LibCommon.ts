@@ -6,7 +6,8 @@ const LibCommon = {
   {
     try{
       let ret = "";
-      let dtObj = new Date(Number(value));
+//      let dtObj = new Date(Number(value));
+      let dtObj = new Date(value);
       let dt = moment(dtObj);      
       ret = dt.format("YYYY-MM-DD");
       return ret;
