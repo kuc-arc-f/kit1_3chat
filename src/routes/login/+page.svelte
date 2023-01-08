@@ -4,6 +4,7 @@
 </svelte:head>
 
 <script lang="ts">
+import { goto } from '$app/navigation';
 import LibDbSession from '$lib/LibDbSession';
 import LibConfig from '$lib/LibConfig';
 
@@ -41,7 +42,8 @@ console.log(key, json.data);
         const user = json.data;
         user.password = "";
         await LibDbSession.set(key, user);
-        window.location.href = '/';	
+        //window.location.href = '/';	
+        goto(`/`);
     } catch (error) {
         console.error(error);
     }  

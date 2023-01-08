@@ -6,7 +6,7 @@
 <script lang="ts">
 import LibDbSession from '$lib/LibDbSession';
 import LibConfig from '$lib/LibConfig';
-
+import { goto } from '$app/navigation';
 /**
 * addItem
 * @param
@@ -35,7 +35,7 @@ console.log(json);
     if (res.status != 200) {
       throw new Error(await res.text());
     }     
-    window.location.href = '/login'
+	goto(`/login`)
   } catch (error) {
     console.error(error);
   }	
