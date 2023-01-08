@@ -32,11 +32,11 @@ if(data.validLogin === false) {
 		<p>ID : {item.id}</p>
 		<a href={`/chats/${item.id}`} class="btn">[ show ]
 		</a>		
-		<a href={`/chats/edit/${item.id}`} class="btn">[ Edit ]
-		</a>		
 		<hr />
 	</div>
 	{/each}	
 </div>
-<!-- /posts/create
+<!-- 
+<a href={`/chats/edit/${item.id}`} class="btn">[ Edit ]
+</a>		
 -->

@@ -163,8 +163,6 @@ const parentShow = function (id: number)
 
 <!-- MarkUp -->
 <div class="container my-2">
-    <a href={`/chats`} class="btn">[ Back ]
-    </a>		
     <h1>{data.id}</h1>
     ID: {data.id}
     <hr class="my-1" />
@@ -209,6 +207,8 @@ const parentShow = function (id: number)
 </div>
 
 <!--
+<a href={`/chats`} class="btn">[ Back ]
+</a>		
 <p>{convertBodyText(item.body)}
 <p>{item.createdAt}, ID: {item.id}</p>
 </p>

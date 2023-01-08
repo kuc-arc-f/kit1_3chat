@@ -6,6 +6,7 @@
 <script lang="ts">
 import LibConfig from '$lib/LibConfig';
 import LibAuth from '$lib/LibAuth';
+import { goto } from '$app/navigation';
 
 /** @type {import('./$types').PageData} */
 export let data;
@@ -35,11 +36,11 @@ console.log(url);
 			body: body
 		});
 		const json = await res.json()
-console.log(json);   
+//console.log(json);   
 		if (res.status != 200) {
 			throw new Error(await res.text());
 		}
-		window.location.href = '/chats';
+		goto(`/chats`)
 	} catch (e) {
       console.error(e);
       alert("error, add");

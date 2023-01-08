@@ -67,8 +67,8 @@ async function deleteItem(){
 	<hr />
 	<div class="col-sm-6">
 		<label>Title:</label>
-        <input type="text" name="title" id="title" class="form-control" value= {data.title}
-           />		
+        <input type="text" name="title" id="title" class="form-control"
+		 value= {data.title}  />		
 	</div>
 	<div class="col-sm-6">
         <label>Content:</label>
