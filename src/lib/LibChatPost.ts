@@ -9,38 +9,51 @@ const initParam =  {
   STATE_DISPLAY_ACTIVE: "Active",      
   STATE_DISPLAY_NONE : "noneActive",      
 };
-//タイマー状態
 const chatParams = {
   INIT_TIME : new Date(),
   STAT : initParam.STATE_ACTIVE,
   STAT_DISPLAY : initParam.STATE_DISPLAY_ACTIVE,
   REMAIN_TIME : 0,
 }
-
 //
 const LibChatPost = {
+  /**
+  * get_params :
+  * @param
+  *
+  * @return
+  */
+  get_params: function() : any
+  {
+    return {
+      ACTIVE_UPDATE_SEC: 30,      
+      STATE_ACTIVE: 1,      
+      STATE_NON_ACTIVE: 2,      
+      STATE_DISPLAY_ACTIVE: "Active",      
+      STATE_DISPLAY_NONE : "noneActive",      
+    }
+  },
   /**
   * postUpdate : 投稿の更新判定
   * @param
   *
   * @return ret: true(update)
   */      
+ /*
   postUpdate: function(): boolean
   {
     let ret = false;
     const sec = this.get_remain_time(chatParams.INIT_TIME, new Date() );
     chatParams.REMAIN_TIME = this.get_next_time(sec);
     const valid = this.valid_update(sec, chatParams.STAT);
-    const auto_update = LibStorage.get_exStorage("auto_update")
-console.log(chatParams.STAT, sec, valid , auto_update, chatParams.REMAIN_TIME );
-    if(parseInt(auto_update) === 1) {
-      if(valid) {
-        chatParams.INIT_TIME = new Date();
-        ret = true;
-      }
+console.log(chatParams.STAT, sec, valid , chatParams.REMAIN_TIME );
+    if(valid) {
+      chatParams.INIT_TIME = new Date();
+      ret = true;
     }
     return ret;
   },
+ */
   /**
   * resetInitTime
   * @param

@@ -7,25 +7,91 @@
 import LibConfig from '$lib/LibConfig';
 import LibAuth from '$lib/LibAuth';
 import LibCommon from '$lib/LibCommon';
-//import LibChatPost from '$lib/LibChatPost';
+import LibChatPost from '$lib/LibChatPost';
+import LibTimer from '$lib/LibTimer';
+import ChatPost from '../ChatPost';
 import ModalPost from './ModalPost.svelte';
-
+//
+const postCfg= LibChatPost.get_params()
+const chatParams = {
+  INIT_TIME : new Date(),
+  STAT : postCfg.STATE_ACTIVE,
+  STAT_DISPLAY : postCfg.STATE_DISPLAY_ACTIVE,
+  REMAIN_TIME : 0,
+}
 /** @type {import('./$types').PageData} */
-export let data: any, chat_posts: any[] = [],
-post_id = 0, modal_display = false;
+export let data: any, chat_posts: any[] = [], DATA = chatParams,
+post_id = 0, modal_display = false, mTimeoutId: any = 0, user:any = {};
+//
 console.log("[id]start");
-console.log(data);
+user = data.user;
 chat_posts = data.chat_posts;
-
+//console.log(user.id);
 /**
- * start proc
- * @param
- *
- * @return
- */ 
+* timer_func
+* @param
+*
+* @return
+*/  
+const timer_func = async function(){
+  const sec = LibChatPost.get_remain_time(DATA.INIT_TIME, new Date() )
+  const valid = LibChatPost.valid_update(sec, DATA.STAT)
+  DATA.REMAIN_TIME = LibChatPost.get_next_time(sec)
+  const timeoutId = LibTimer.getTimeoutId();
+//console.log("timeoutId=", timeoutId);
+  if(valid){
+    DATA.INIT_TIME = new Date()
+    //user.id
+    proc_update()
+  }
+  timeout_next();
+  if(typeof window !== 'undefined' ){
+    console.log(DATA.STAT, sec, valid);
+  }
+};
+/**
+* timeout_next
+* @param
+*
+* @return
+*/
+function timeout_next(){
+  mTimeoutId = setTimeout(timer_func, 5000 );
+  LibTimer.setTimeoutId(mTimeoutId);
+}
+/**
+* proc_update
+* @param
+*
+* @return
+*/
+const proc_update = async function ()
+{
+    try{
+        const items = await ChatPost.getList(data.id);
+console.log(items);
+        chat_posts = items;
+    } catch (e) {
+    console.error(e);
+    throw new Error('Error , proc_update');
+    }
+// /console.log(json)	
+}
+/**
+* init proc: 開始
+* @param
+*
+* @return
+*/
 if(data.validLogin === false) {
     window.location.href = '/login';
 }
+//
+const timeoutId = LibTimer.getTimeoutId();
+if(timeoutId !== null) {
+  LibTimer.clearTimer(timeoutId);
+}
+timeout_next()
 /**
 * addItem
 * @param
@@ -40,27 +106,27 @@ async function addItem(){
             throw new Error('Error , user nothing');
         }
 //console.log(user);
-    const elemBody = document.querySelector<HTMLInputElement>('#body');
-    const item = {
-        title: '',
-        chatId: Number(data.id),
-        body: elemBody?.value,
-        userId : Number(user.id),
-    }
-    console.log(item);
-    const url = LibConfig.API_URL + '/chat_posts/create';
-    const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json',},
-        body: JSON.stringify(item),
-    });
-    if (res.status != 200) {
-        throw new Error(await res.text());
-    }
-    //@ts-ignore
-    elemBody.value = "";
-    console.log(await res.json())
-    //await proc_update()
+        const elemBody = document.querySelector<HTMLInputElement>('#body');
+        const item = {
+            title: '',
+            chatId: Number(data.id),
+            body: elemBody?.value,
+            userId : Number(user.id),
+        }
+        console.log(item);
+        const url = LibConfig.API_URL + '/chat_posts/create';
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json',},
+            body: JSON.stringify(item),
+        });
+        if (res.status != 200) {
+            throw new Error(await res.text());
+        }
+        //@ts-ignore
+        elemBody.value = "";
+        console.log(await res.json())
+        await proc_update()
     } catch (error) {
         console.error(error);
     }    
@@ -114,6 +180,8 @@ const parentShow = function (id: number)
     <hr class="my-1" />
     {#each chat_posts as item}
     <div>
+        <h5>{item.UserName}</h5>
+        <hr class="my-1" />
         <p>{@html LibCommon.replaceBrString(item.body)}</p>
         <p>{LibCommon.converDateString(item.createdAt)}, ID: {item.id}
         </p>
@@ -125,8 +193,7 @@ const parentShow = function (id: number)
     <!-- Modal -->
     <div class="chat_show_modal_wrap">
         <button type="button" class="btn btn-primary" id="open_post_show"
-        data-bs-toggle="modal" data-bs-target="#exampleModal">
-         Launch demo modal
+        data-bs-toggle="modal" data-bs-target="#exampleModal">Launch demo modal
        </button>
         <div class="modal fade" id="exampleModal" tabindex="-1"
           aria-labelledby="exampleModalLabel" aria-hidden="true">
