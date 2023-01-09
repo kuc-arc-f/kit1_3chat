@@ -1,4 +1,4 @@
-﻿# kit1_3chat
+﻿# kit1_3chat (BETA)
 
  Version: 0.9.1
 
@@ -48,3 +48,8 @@ yarn dev
 ***
 ### Blog:
 
+* SvelteKit 1.0 初級メモ
+
+https://zenn.dev/knaka0209/books/a7dd4a9b5b636f
+
+***
