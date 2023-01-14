@@ -174,7 +174,7 @@ console.log(chatParams.STAT, sec, valid , chatParams.REMAIN_TIME );
         id: id,
       }
 //console.log(item)      
-      const res = await fetch(process.env.MY_API_URL + '/chat_posts/delete', {
+      const res = await fetch(LibConfig.API_URL + '/chat_posts/delete', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json',},
         body: JSON.stringify(item),
@@ -199,7 +199,7 @@ console.log(chatParams.STAT, sec, valid , chatParams.REMAIN_TIME );
   {
     try {
       let ret = {};
-      const res = await fetch(process.env.MY_API_URL + '/chat_posts/show/' + id, {
+      const res = await fetch(LibConfig.API_URL + '/chat_posts/show/' + id, {
         method: 'GET',
       });
       if (res.status != 200) {
@@ -231,7 +231,7 @@ console.log(chatParams.STAT, sec, valid , chatParams.REMAIN_TIME );
         userId: userId,
       }
 //console.log(item)      
-       const res = await fetch(process.env.MY_API_URL + '/chat_posts/get_last_time', {
+       const res = await fetch(LibConfig.API_URL + '/chat_posts/get_last_time', {
          method: 'POST',
          headers: { 'Content-Type': 'application/json',},
          body: JSON.stringify(item),
@@ -282,7 +282,7 @@ console.log(chatParams.STAT, sec, valid , chatParams.REMAIN_TIME );
         chatId : chatId, seachKey: searchKey, 
       };
 //console.log(item);
-      const res = await fetch(process.env.MY_API_URL + '/chat_posts/search', {
+      const res = await fetch(LibConfig.API_URL + '/chat_posts/search', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', },
         body: JSON.stringify(item),

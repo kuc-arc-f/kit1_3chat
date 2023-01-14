@@ -9,8 +9,10 @@ import LibAuth from '$lib/LibAuth';
 import LibCommon from '$lib/LibCommon';
 import LibChatPost from '$lib/LibChatPost';
 import LibTimer from '$lib/LibTimer';
+import LibNotify from '$lib/LibNotify';
 import ChatPost from '../ChatPost';
 import ModalPost from './ModalPost.svelte';
+
 //
 const postCfg= LibChatPost.get_params()
 const chatParams = {
@@ -21,12 +23,13 @@ const chatParams = {
 }
 /** @type {import('./$types').PageData} */
 export let data: any, chat_posts: any[] = [], DATA = chatParams,
-post_id = 0, modal_display = false, mTimeoutId: any = 0, user:any = {};
+post_id = 0, modal_display = false, mTimeoutId: any = 0, user:any = {}, lastCreateTime: string = "";
 //
 console.log("[id]start");
 user = data.user;
 chat_posts = data.chat_posts;
-//console.log(user.id);
+//console.log(data);
+lastCreateTime = data.lastCreateTime;
 /**
 * timer_func
 * @param
@@ -41,8 +44,8 @@ const timer_func = async function(){
 //console.log("timeoutId=", timeoutId);
   if(valid){
     DATA.INIT_TIME = new Date()
-    //user.id
-    proc_update()
+console.log("uid=", user.id);
+    proc_update(Number(data.id), user.id)
   }
   timeout_next();
   if(typeof window !== 'undefined' ){
@@ -65,17 +68,26 @@ function timeout_next(){
 *
 * @return
 */
-const proc_update = async function ()
+const proc_update = async function (chatId: number, userId: number)
 {
     try{
-        const items = await ChatPost.getList(data.id);
+        const post: any = await ChatPost.getLastTime(chatId, userId);
+//console.log(post.createdAt);
+//console.log("lastCreateTime=", lastCreateTime);
+        let items = [];
+        if(lastCreateTime !== post.createdAt) {
+            //update
+            items = await ChatPost.getList(chatId);
 console.log(items);
-        chat_posts = items;
+            lastCreateTime = post.createdAt;
+            chat_posts = items;
+            //beep
+            //beepStart();
+        }
     } catch (e) {
-    console.error(e);
-    throw new Error('Error , proc_update');
+        console.error(e);
+        throw new Error('Error , proc_update');
     }
-// /console.log(json)	
 }
 /**
 * init proc: 開始
@@ -126,7 +138,7 @@ async function addItem(){
         //@ts-ignore
         elemBody.value = "";
         console.log(await res.json())
-        await proc_update()
+        await proc_update(Number(data.id), user.id);
     } catch (error) {
         console.error(error);
     }    
@@ -153,6 +165,25 @@ const parentShow = function (id: number)
     } catch (e) {
         console.log(e);
     }
+}
+/**
+ * parentGetList
+ * @param
+ *
+ * @return
+ */
+const parentGetList = async function (id: number) {
+    try {
+        const items = await ChatPost.getList(Number(data.id));
+        chat_posts = items;
+//        await proc_update(Number(data.id), user.id);
+    } catch (e) {
+        console.error(e);
+    }    
+}
+//
+const beepStart = function () {
+    LibNotify.beep({ time: .3 });
 }
 </script>
 
@@ -198,7 +229,7 @@ const parentShow = function (id: number)
             <div class="modal-dialog">
                 <div class="modal-content">
                     {#if modal_display}
-                    <ModalPost post_id={post_id}  />
+                    <ModalPost post_id={post_id} parentGetList={parentGetList} />
                     {/if}
                 </div>
             </div>

@@ -28,18 +28,29 @@ const getItem = async function(id: number) {
 //
 /** @type {import('./$types').PageLoad} */
 export async function load({ params }) {
-console.log("id=", params.id);
-  const validLogin: boolean = await LibAuth.validLogin();
-  const user: any = await LibAuth.getUser();
-console.log(user);
-  const items = await getItem(Number(params.id));
-//console.log(items);
-  return {
-      id: params.id,
-      chat_posts: items,
-      validLogin: validLogin,
-      user: user,
-  };  
+  try{
+    console.log("id=", params.id);
+    const validLogin: boolean = await LibAuth.validLogin();
+    const user: any = await LibAuth.getUser();
+    const items = await getItem(Number(params.id));
+console.log(items);
+    let lastCreateTime = "";
+    if(items.length > 0) {
+      const post = items[0];
+console.log("createdAt=", post.createdAt);
+      lastCreateTime = post.createdAt;
+    }
+    return {
+        id: params.id,
+        chat_posts: items,
+        validLogin: validLogin,
+        user: user,
+        lastCreateTime: lastCreateTime,
+    };  
+  } catch (e) {
+    console.error(e);
+    throw new Error('Error , delete_movie');
+  }
 //    throw error(404, 'Not found');
 }
 /*

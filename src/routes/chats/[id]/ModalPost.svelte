@@ -6,13 +6,16 @@
 <script lang="ts">
 import LibDbSession from '$lib/LibDbSession';
 import PostCommon from '../PostCommon';
+import LibAuth from '$lib/LibAuth';
+import LibChatPost from '$lib/LibChatPost';
 import LibConfig from '$lib/LibConfig';
 import LibCommon from '$lib/LibCommon';
 import LibThread from '$lib/LibThread';
 //
-export let post_id: number, post_body: string = "",
+export let userId: number = 0, post_id: number, post_body: string = "", 
 postUserName: string = "", dateStr: string = "", postUserId: number,
-chatId: number = 0, threadItems:any[] = [];
+chatId: number = 0, threadItems:any[] = [],
+parentGetList: any;
 //, postItem: any
 console.log("#ModalPost.post");
 console.log("post_id=", post_id);
@@ -25,14 +28,18 @@ console.log("post_id=", post_id);
 const loadProc = async function () {
   try {
 console.log("#loadProc.id=", post_id);
+//userId
+    const user: any = await LibAuth.getUser();
+    userId = user.id;
+//console.log("user.id=", userId);
     const posts = await LibDbSession.get(LibConfig.SESSION_KEY_CHAT_POST);
     let result = posts.filter(post => post.id === post_id);
     if(result.length > 0) {
       const item = result[0];
-//console.log(item);
       post_body = item.body;
       postUserName = item.UserName;
       postUserId = item.UserId;
+console.log("postUserId=", postUserId);
       chatId = item.chatId;
       dateStr = LibCommon.converDatetimeString(item.createdAt);
       //Thread
@@ -80,6 +87,29 @@ const createReply = async function () : Promise<void>
     alert("Error, createReply");
   }
 }
+/**
+* childDeleteItem :
+* @param
+*
+* @return Promise<void>
+*/
+const childDeleteItem = async function () : Promise<void>
+{
+  try {
+    ////console.log("user.id=", userId);
+console.log(post_id);
+console.log("postUserId=", postUserId);
+    await LibChatPost.delete(post_id);
+    //close
+    const btn = document.getElementById("modal_close_button");
+    btn?.click();
+    await parentGetList(post_id);
+  } catch (e) {
+    console.error(e);
+    alert("Error, childDeleteItem");
+  }
+}
+
 </script>
 <!-- CSS -->
 <style>
@@ -104,7 +134,7 @@ const createReply = async function () : Promise<void>
           <div class="col-sm-9"><textarea class="form-control" id="modal_reply_body" rows={3} />
           </div>
           <div class="col-sm-3">
-            <button class="mt-2 btn btn-primary"on:click={() => createReply()} >
+            <button class="mt-2 btn btn-primary" on:click={() => createReply()} >
               Reply</button>
           </div>
         </div>  
@@ -120,8 +150,13 @@ const createReply = async function () : Promise<void>
         {/each}     
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        
+        {#if (postUserId === userId)}
+          <button type="button" class="btn btn-outline-danger" id="modal_post_btn_delete"
+          on:click={() => childDeleteItem()}
+          >Delete</button>            
+        {/if}      
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="modal_close_button"
+        >Close</button>
     </div>
     <!-- Modal_body_end -->
 </div>
