@@ -82,7 +82,15 @@ const proc_update = async function (chatId: number, userId: number)
             lastCreateTime = post.createdAt;
             chat_posts = items;
             //beep
-            beepStart();
+            if(items !== null && items.length > 0) {
+                const item: any = items[0];
+console.log(item.body, item.UserName, item.createdAt);
+                sendNotify(item.UserName, item.body);
+                setTimeout(async () => {
+                    console.log("#sound start");
+                    await beepStart();
+                }, 1000);                
+            }
         }
     } catch (e) {
         console.error(e);
@@ -98,6 +106,8 @@ const proc_update = async function (chatId: number, userId: number)
 if(data.validLogin === false) {
     window.location.href = '/login';
 }
+//
+LibNotify.validNotification();
 //
 const timeoutId = LibTimer.getTimeoutId();
 if(timeoutId !== null) {
@@ -179,9 +189,22 @@ const parentGetList = async function (id: number) {
     try {
         const items = await ChatPost.getList(Number(data.id));
         chat_posts = items;
-//        await proc_update(Number(data.id), user.id);
     } catch (e) {
         console.error(e);
+    }    
+}
+/**
+ * sendNotify: 通知APIの起動
+ * @param body : string
+ *
+ * @return
+ */  
+const sendNotify = async function (name: string, body: string) {
+    try{
+        LibNotify.displayNotification(name, body);
+    } catch (e) {
+        console.error(e);
+        throw new Error('Error , sendNotify');
     }    
 }
 //
