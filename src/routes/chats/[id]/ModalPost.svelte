@@ -144,7 +144,8 @@ console.log("postUserId=", postUserId);
           <div class="thread_user_name">
             <span class="fs-5">{item.UserName}: </span>{item.createdAt}
           </div>
-          {item.body}
+          
+          <p>{@html LibCommon.replaceBrString(item.body)}</p>
           <hr class="my-1" />
         </div>
         {/each}     
@@ -162,5 +163,5 @@ console.log("postUserId=", postUserId);
 </div>
 
 <!-- 
-<button type="button" class="btn btn-primary">Save</button>
+{item.body}
 -->

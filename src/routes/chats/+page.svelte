@@ -30,7 +30,7 @@ if(data.validLogin === false) {
 	<div>
 		<h3>{item.name}</h3>
 		<p>ID : {item.id}</p>
-		<a href={`/chats/${item.id}`} class="btn">[ show ]
+		<a href={`/chats/${item.id}`} class="btn btn-outline-primary">Show
 		</a>		
 		<hr />
 	</div>
