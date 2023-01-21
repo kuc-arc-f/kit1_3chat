@@ -9,7 +9,7 @@ const LibNotify = {
   beep: function(options: any): void
   {
     Promise.resolve(options).then(function(value) {
-      console.log(value);
+//console.log(value);
       // Options
       options         = options           || {};
       const type      = options.type      == null ? 'sine' : options.type;

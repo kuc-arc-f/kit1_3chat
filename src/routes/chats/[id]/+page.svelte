@@ -72,17 +72,17 @@ const proc_update = async function (chatId: number, userId: number)
 {
     try{
         const post: any = await ChatPost.getLastTime(chatId, userId);
-//console.log(post.createdAt);
+//console.log(post);
 //console.log("lastCreateTime=", lastCreateTime);
         let items = [];
         if(lastCreateTime !== post.createdAt) {
             //update
             items = await ChatPost.getList(chatId);
-console.log(items);
+//console.log(items);
             lastCreateTime = post.createdAt;
             chat_posts = items;
             //beep
-            //beepStart();
+            beepStart();
         }
     } catch (e) {
         console.error(e);
@@ -137,8 +137,11 @@ async function addItem(){
         }
         //@ts-ignore
         elemBody.value = "";
-        console.log(await res.json())
-        await proc_update(Number(data.id), user.id);
+        const resJson = await res.json();
+        console.log(resJson.data)
+        const items = await ChatPost.getList(data.id);
+        chat_posts = items;
+        lastCreateTime = resJson.data.createdAt;
     } catch (error) {
         console.error(error);
     }    
