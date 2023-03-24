@@ -10,9 +10,9 @@ import LibCommon from '$lib/LibCommon';
 import LibChatPost from '$lib/LibChatPost';
 import LibTimer from '$lib/LibTimer';
 import LibNotify from '$lib/LibNotify';
+import LibCookie from '$lib/LibCookie';
 import ChatPost from '../ChatPost';
 import ModalPost from './ModalPost.svelte';
-
 //
 const postCfg= LibChatPost.get_params()
 const chatParams = {
@@ -25,7 +25,7 @@ const chatParams = {
 export let data: any, chat_posts: any[] = [], DATA = chatParams,
 post_id = 0, modal_display = false, mTimeoutId: any = 0, user:any = {}, lastCreateTime: string = "";
 //
-console.log("[id]start");
+console.log("[id]start.id=", data.id);
 user = data.user;
 chat_posts = data.chat_posts;
 //console.log(data);
@@ -105,6 +105,11 @@ console.log(item.body, item.UserName, item.createdAt);
 */
 if(data.validLogin === false) {
     window.location.href = '/login';
+}
+if(typeof window !== 'undefined' ) {
+    const key = LibConfig.COOKIE_KEY_LAST_CHAT;
+console.log("#init proc", key);
+    LibCookie.setCookie(key, String(data.id));
 }
 //
 LibNotify.validNotification();

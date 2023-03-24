@@ -10,5 +10,7 @@ const LibConfig = {
   //session_key
   SESSION_KEY_USER: "user",
   SESSION_KEY_CHAT_POST: "chat_posts",
+  //cookie
+  COOKIE_KEY_LAST_CHAT: "kit_last_chat",
 }
 export default LibConfig;
